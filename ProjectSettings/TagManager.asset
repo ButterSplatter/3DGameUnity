@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Obstacle
   - Pickup
+  - CinemachineTarget
+  - Powerup
+  - LowObstacle
   layers:
   - Default
   - TransparentFX

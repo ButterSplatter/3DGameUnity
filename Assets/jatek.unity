@@ -168,6 +168,7 @@ MonoBehaviour:
   TilePrefab: {fileID: 8006025409415494162, guid: b0924a7002c89ea4a9f45a2040bd1728, type: 3}
   ObstaclePrefab: {fileID: 4322999853635020151, guid: b87ce5e3cddae3b47a71e9c87fd19b2c, type: 3}
   CoinPrefab: {fileID: 3338258308244515186, guid: bf323604506758f49bc754b465d99bd5, type: 3}
+  ShoePowerupPrefab: {fileID: 0}
   StartTiles: 30
   TileLength: 20
   LaneOffset: 2
@@ -175,6 +176,7 @@ MonoBehaviour:
   ObstaclesMax: 3
   CoinsMin: 2
   CoinsMax: 6
+  ShoeSpawnChance: 0.12
 --- !u!114 &41277968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +202,7 @@ GameObject:
   - component: {fileID: 185685474}
   - component: {fileID: 185685477}
   - component: {fileID: 185685478}
+  - component: {fileID: 185685480}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -275,7 +278,7 @@ Transform:
   m_GameObject: {fileID: 185685473}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.162, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -339,6 +342,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sensitivity: 2
   PlayerBody: {fileID: 1219313088}
+--- !u!143 &185685480
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185685473}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &242623042
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,12 +693,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &1219313085
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -756,7 +784,7 @@ Transform:
   m_GameObject: {fileID: 1219313083}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -772,14 +800,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219313083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8a6cd507f5ae0f429f9a2d0d078f9e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 629a013970d431b4583274b75139950c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ForwardSpeed: 8
   LaneOffset: 2
   LaneChangeSpeed: 12
-  ForwardSpeed: 8
   JumpHeight: 2.2
   Gravity: -20
+  SlideKey: 118
+  SlideDuration: 0.8
+  SlideSpeedMultiplier: 1.4
+  StandingHeight: 2
+  SlidingHeight: 1
+  StandingCenterY: 1
+  SlidingCenterY: 0.5
 --- !u!1 &1308375075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,6 +1151,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &1818274996
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1204975485712336035, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3264028242905571573, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_Name
+      value: ShoePowerup
+      objectReference: {fileID: 0}
+    - target: {fileID: 3264028242905571573, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_TagString
+      value: Powerup
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437226270101454768, guid: 9fd81724662242a4a994067b2370569f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9fd81724662242a4a994067b2370569f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1126,3 +1226,4 @@ SceneRoots:
   - {fileID: 453766638}
   - {fileID: 1612018646}
   - {fileID: 916372222}
+  - {fileID: 1818274996}

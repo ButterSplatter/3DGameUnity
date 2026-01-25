@@ -7,6 +7,7 @@ public class TileManager : MonoBehaviour
     public GameObject TilePrefab;
     public GameObject ObstaclePrefab;
     public GameObject CoinPrefab;
+    public GameObject ShoePowerupPrefab;
 
     public int StartTiles = 12;
     public float TileLength = 20f;
@@ -18,6 +19,8 @@ public class TileManager : MonoBehaviour
 
     public int CoinsMin = 2;
     public int CoinsMax = 6;
+
+    public float ShoeSpawnChance = 0.12f;
 
     Queue<GameObject> tiles = new Queue<GameObject>();
     float spawnZ = 0f;
@@ -50,6 +53,7 @@ public class TileManager : MonoBehaviour
         {
             SpawnObstacles(spawnZ);
             SpawnCoins(spawnZ);
+            SpawnShoe(spawnZ);
         }
 
         spawnZ += TileLength;
@@ -83,6 +87,19 @@ public class TileManager : MonoBehaviour
             GameObject c = Instantiate(CoinPrefab, pos, Quaternion.identity);
             c.tag = "Pickup";
         }
+    }
+
+    void SpawnShoe(float tileZ)
+    {
+        if (ShoePowerupPrefab == null) return;
+        if (Random.value > ShoeSpawnChance) return;
+
+        int lane = Random.Range(-1, 2);
+        float localZ = Random.Range(4f, TileLength - 3f);
+
+        Vector3 pos = new Vector3(lane * LaneOffset, 1.2f, tileZ + localZ);
+        GameObject s = Instantiate(ShoePowerupPrefab, pos, Quaternion.identity);
+        s.tag = "Powerup";
     }
 
     void RemoveOldest()
