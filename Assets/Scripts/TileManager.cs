@@ -26,6 +26,8 @@ public class TileManager : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.I != null && GameManager.I.IsGameOver) return;
+
         float preloadDistance = TileLength * 4f;
 
         while (Player.position.z + preloadDistance > spawnZ)
@@ -34,6 +36,7 @@ public class TileManager : MonoBehaviour
         while (tiles.Count > StartTiles + 4)
             RemoveOldest();
     }
+
 
     void SpawnTile(bool empty)
     {

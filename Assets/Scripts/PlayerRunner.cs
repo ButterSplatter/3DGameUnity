@@ -14,7 +14,6 @@ public class PlayerRunner : MonoBehaviour
     CharacterController cc;
     int currentLane = 0;
     float verticalVelocity;
-    bool gameOver;
 
     void Start()
     {
@@ -23,7 +22,7 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
-        if (gameOver) return;
+        if (GameManager.I != null && GameManager.I.IsGameOver) return;
 
         HandleInput();
         Move();
@@ -65,12 +64,8 @@ public class PlayerRunner : MonoBehaviour
     {
         if (hit.collider.CompareTag("Obstacle"))
         {
-            gameOver = true;
+            if (GameManager.I != null)
+                GameManager.I.SetGameOver();
         }
-    }
-
-    public bool IsGameOver()
-    {
-        return gameOver;
     }
 }
