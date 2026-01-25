@@ -68,4 +68,15 @@ public class PlayerRunner : MonoBehaviour
                 GameManager.I.SetGameOver();
         }
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (GameManager.I != null && GameManager.I.IsGameOver) return;
+
+        if (other.CompareTag("Pickup"))
+        {
+            Pickup p = other.GetComponent<Pickup>();
+            if (p != null) p.Collect();
+        }
+    }
+
 }

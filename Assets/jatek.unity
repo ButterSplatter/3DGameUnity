@@ -167,11 +167,14 @@ MonoBehaviour:
   Player: {fileID: 1219313088}
   TilePrefab: {fileID: 8006025409415494162, guid: b0924a7002c89ea4a9f45a2040bd1728, type: 3}
   ObstaclePrefab: {fileID: 4322999853635020151, guid: b87ce5e3cddae3b47a71e9c87fd19b2c, type: 3}
+  CoinPrefab: {fileID: 3338258308244515186, guid: bf323604506758f49bc754b465d99bd5, type: 3}
   StartTiles: 30
   TileLength: 20
   LaneOffset: 2
   ObstaclesMin: 1
   ObstaclesMax: 3
+  CoinsMin: 2
+  CoinsMax: 6
 --- !u!114 &41277968
 MonoBehaviour:
   m_ObjectHideFlags: 0

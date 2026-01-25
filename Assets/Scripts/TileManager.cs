@@ -6,6 +6,7 @@ public class TileManager : MonoBehaviour
     public Transform Player;
     public GameObject TilePrefab;
     public GameObject ObstaclePrefab;
+    public GameObject CoinPrefab;
 
     public int StartTiles = 12;
     public float TileLength = 20f;
@@ -14,6 +15,9 @@ public class TileManager : MonoBehaviour
 
     public int ObstaclesMin = 1;
     public int ObstaclesMax = 3;
+
+    public int CoinsMin = 2;
+    public int CoinsMax = 6;
 
     Queue<GameObject> tiles = new Queue<GameObject>();
     float spawnZ = 0f;
@@ -37,14 +41,16 @@ public class TileManager : MonoBehaviour
             RemoveOldest();
     }
 
-
     void SpawnTile(bool empty)
     {
         GameObject tile = Instantiate(TilePrefab, Vector3.forward * spawnZ, Quaternion.identity);
         tiles.Enqueue(tile);
 
         if (!empty)
+        {
             SpawnObstacles(spawnZ);
+            SpawnCoins(spawnZ);
+        }
 
         spawnZ += TileLength;
     }
@@ -61,6 +67,21 @@ public class TileManager : MonoBehaviour
             Vector3 pos = new Vector3(lane * LaneOffset, 1f, tileZ + localZ);
             GameObject o = Instantiate(ObstaclePrefab, pos, Quaternion.identity);
             o.tag = "Obstacle";
+        }
+    }
+
+    void SpawnCoins(float tileZ)
+    {
+        int count = Random.Range(CoinsMin, CoinsMax + 1);
+
+        for (int i = 0; i < count; i++)
+        {
+            int lane = Random.Range(-1, 2);
+            float localZ = Random.Range(3f, TileLength - 2f);
+
+            Vector3 pos = new Vector3(lane * LaneOffset, 1.2f, tileZ + localZ);
+            GameObject c = Instantiate(CoinPrefab, pos, Quaternion.identity);
+            c.tag = "Pickup";
         }
     }
 
