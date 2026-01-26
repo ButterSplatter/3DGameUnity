@@ -192,6 +192,12 @@ public class RunnerController : MonoBehaviour
             }
             return;
         }
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            GameManager.I.SetGameOver();
+            return;
+        }
+
     }
     public bool IsSliding()
     {
@@ -202,6 +208,15 @@ public class RunnerController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (GameManager.I != null && GameManager.I.IsGameOver) return;
+
+        if (other.CompareTag("LowObstacle"))
+        {
+            if (!isSliding)
+            {
+                GameManager.I.SetGameOver();
+            }
+            return;
+        }
 
         if (other.CompareTag("Pickup"))
         {
@@ -217,4 +232,5 @@ public class RunnerController : MonoBehaviour
             return;
         }
     }
+
 }

@@ -9,6 +9,13 @@ public class TileManager : MonoBehaviour
     public GameObject CoinPrefab;
     public GameObject ShoePowerupPrefab;
 
+    public GameObject EnemyPrefab;
+    [Range(0f, 1f)]
+    public float EnemySpawnChance = 0.18f;
+    public float EnemySpeed = 2.5f;
+    public float EnemySpawnHeight = 1f;
+
+
     public int StartTiles = 12;
     public float TileLength = 20f;
 
@@ -21,6 +28,11 @@ public class TileManager : MonoBehaviour
     public int CoinsMax = 6;
 
     public float ShoeSpawnChance = 0.12f;
+
+    public GameObject LowObstaclePrefab;
+    [Range(0f, 1f)]
+    public float LowObstacleChance = 0.4f;
+
 
     Queue<GameObject> tiles = new Queue<GameObject>();
     float spawnZ = 0f;
@@ -54,10 +66,24 @@ public class TileManager : MonoBehaviour
             SpawnObstacles(spawnZ);
             SpawnCoins(spawnZ);
             SpawnShoe(spawnZ);
+            SpawnEnemy(spawnZ);
+
         }
 
         spawnZ += TileLength;
     }
+    void SpawnEnemy(float tileZ)
+    {
+        if (EnemyPrefab == null) return;
+        if (Random.value > EnemySpawnChance) return;
+
+        int lane = Random.Range(-1, 2);
+        float localZ = Random.Range(8f, TileLength - 3f);
+
+        Vector3 pos = new Vector3(lane * LaneOffset, EnemySpawnHeight, tileZ + localZ);
+        Instantiate(EnemyPrefab, pos, Quaternion.identity);
+    }
+
 
     void SpawnObstacles(float tileZ)
     {
@@ -68,11 +94,24 @@ public class TileManager : MonoBehaviour
             int lane = Random.Range(-1, 2);
             float localZ = Random.Range(4f, TileLength - 3f);
 
-            Vector3 pos = new Vector3(lane * LaneOffset, 1f, tileZ + localZ);
-            GameObject o = Instantiate(ObstaclePrefab, pos, Quaternion.identity);
-            o.tag = "Obstacle";
+            Vector3 pos;
+            GameObject prefab;
+
+            if (Random.value < LowObstacleChance)
+            {
+                prefab = LowObstaclePrefab;
+                pos = new Vector3(lane * LaneOffset, 0f, tileZ + localZ);
+            }
+            else
+            {
+                prefab = ObstaclePrefab;
+                pos = new Vector3(lane * LaneOffset, 1f, tileZ + localZ);
+            }
+
+            GameObject o = Instantiate(prefab, pos, Quaternion.identity);
         }
     }
+
 
     void SpawnCoins(float tileZ)
     {

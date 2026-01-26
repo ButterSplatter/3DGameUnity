@@ -9,6 +9,7 @@ TagManager:
   - CinemachineTarget
   - Powerup
   - LowObstacle
+  - Enemy
   layers:
   - Default
   - TransparentFX
