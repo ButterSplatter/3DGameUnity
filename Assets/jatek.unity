@@ -808,6 +808,10 @@ MonoBehaviour:
   LaneChangeSpeed: 12
   JumpHeight: 2.2
   Gravity: -20
+  CameraTransform: {fileID: 185685476}
+  CameraNormalY: 1.6
+  CameraSlideY: 0.2
+  CameraSlideSpeed: 10
   SlideKey: 118
   SlideDuration: 0.8
   SlideSpeedMultiplier: 1.4

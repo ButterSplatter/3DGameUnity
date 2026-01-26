@@ -11,6 +11,13 @@ public class RunnerController : MonoBehaviour
     public float JumpHeight = 2.2f;
     public float Gravity = -20f;
 
+
+    public Transform CameraTransform;
+
+    public float CameraNormalY = 1.6f;
+    public float CameraSlideY = 0.9f;
+    public float CameraSlideSpeed = 10f;
+
     public KeyCode SlideKey = KeyCode.LeftControl;
     public float SlideDuration = 0.8f;
     public float SlideSpeedMultiplier = 1.4f;
@@ -34,6 +41,13 @@ public class RunnerController : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         ApplyStanding();
+
+        if (CameraTransform)
+        {
+            Vector3 p = CameraTransform.localPosition;
+            p.y = CameraNormalY;
+            CameraTransform.localPosition = p;
+        }
     }
 
     void Update()
@@ -77,7 +91,20 @@ public class RunnerController : MonoBehaviour
         motion.x = newX - transform.position.x;
 
         cc.Move(motion);
+        UpdateCameraHeight();
+
     }
+    void UpdateCameraHeight()
+    {
+        if (!CameraTransform) return;
+
+        float targetY = isSliding ? CameraSlideY : CameraNormalY;
+
+        Vector3 pos = CameraTransform.localPosition;
+        pos.y = Mathf.Lerp(pos.y, targetY, CameraSlideSpeed * Time.deltaTime);
+        CameraTransform.localPosition = pos;
+    }
+
 
     void TickSlide()
     {
@@ -165,6 +192,10 @@ public class RunnerController : MonoBehaviour
             }
             return;
         }
+    }
+    public bool IsSliding()
+    {
+        return isSliding;
     }
 
 
