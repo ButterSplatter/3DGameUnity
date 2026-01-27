@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -8,6 +9,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
+        //transform.rotation.Set(0,90,0,0);
         Destroy(gameObject, LifeTime);
     }
 
