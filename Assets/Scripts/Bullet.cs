@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -7,15 +6,24 @@ public class Bullet : MonoBehaviour
     public float LifeTime = 2f;
     public int Damage = 1;
 
+    public Transform Visual;
+    public Vector3 VisualEulerOffset;
+
+    Vector3 dir;
+
     void Start()
     {
-        //transform.rotation.Set(0,90,0,0);
+        if (Visual != null)
+            Visual.localRotation = Quaternion.Euler(VisualEulerOffset);
+
+        dir = transform.forward.normalized;
+
         Destroy(gameObject, LifeTime);
     }
 
     void Update()
     {
-        transform.position += transform.forward * Speed * Time.deltaTime;
+        transform.position += dir * Speed * Time.deltaTime;
     }
 
     void OnTriggerEnter(Collider other)
