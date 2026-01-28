@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class RunnerController : MonoBehaviour
@@ -33,6 +33,10 @@ public class RunnerController : MonoBehaviour
     public float DashDuration = 0.18f;
     public float DashCooldown = 1.2f;
 
+    [Header("Double Jump")]
+    public int MaxJumps = 2;
+
+    int jumpsLeft;
 
     CharacterController cc;
     int currentLane = 0;
@@ -50,6 +54,8 @@ public class RunnerController : MonoBehaviour
 
     void Start()
     {
+        jumpsLeft = MaxJumps;
+
         cc = GetComponent<CharacterController>();
         ApplyStanding();
 
@@ -78,12 +84,17 @@ public class RunnerController : MonoBehaviour
 
         if (grounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
+            jumpsLeft = MaxJumps;
 
-        if (grounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && !isSliding)
+
+
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && jumpsLeft > 0 && !isSliding)
         {
             float effectiveJump = JumpHeight * jumpMultiplier;
             verticalVelocity = Mathf.Sqrt(effectiveJump * -2f * Gravity);
+            jumpsLeft--;
         }
+
 
         if (grounded && Input.GetKeyDown(SlideKey) && !isSliding)
             StartSlide();
