@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class RunnerController : MonoBehaviour
@@ -27,11 +27,26 @@ public class RunnerController : MonoBehaviour
     public float StandingCenterY = 1f;
     public float SlidingCenterY = 0.5f;
 
+    [Header("Dash")]
+    public KeyCode DashKey = KeyCode.W;
+    public float DashSpeed = 22f;
+    public float DashDuration = 0.18f;
+    public float DashCooldown = 1.2f;
+
+    [Header("Double Jump")]
+    public int MaxJumps = 2;
+
+    int jumpsLeft;
+
     CharacterController cc;
     int currentLane = 0;
     float verticalVelocity;
 
     bool isSliding;
+    bool isDashing;
+    float dashTimer;
+    float dashCooldownTimer;
+
     float slideTimer;
 
     float jumpBoostTimer;
@@ -39,6 +54,8 @@ public class RunnerController : MonoBehaviour
 
     void Start()
     {
+        jumpsLeft = MaxJumps;
+
         cc = GetComponent<CharacterController>();
         ApplyStanding();
 
@@ -67,12 +84,17 @@ public class RunnerController : MonoBehaviour
 
         if (grounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
+            jumpsLeft = MaxJumps;
 
-        if (grounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && !isSliding)
+
+
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && jumpsLeft > 0 && !isSliding)
         {
             float effectiveJump = JumpHeight * jumpMultiplier;
             verticalVelocity = Mathf.Sqrt(effectiveJump * -2f * Gravity);
+            jumpsLeft--;
         }
+
 
         if (grounded && Input.GetKeyDown(SlideKey) && !isSliding)
             StartSlide();
@@ -82,8 +104,22 @@ public class RunnerController : MonoBehaviour
         float targetX = currentLane * LaneOffset;
         float newX = Mathf.Lerp(transform.position.x, targetX, LaneChangeSpeed * Time.deltaTime);
 
+        TickDash();
+
+        if (Input.GetKeyDown(DashKey) && !isDashing && dashCooldownTimer <= 0f)
+        {
+            StartDash();
+        }
+
+
         float speed = ForwardSpeed;
-        if (isSliding) speed *= SlideSpeedMultiplier;
+
+        if (isSliding)
+            speed *= SlideSpeedMultiplier;
+
+        if (isDashing)
+            speed = DashSpeed;
+
 
         Vector3 motion = Vector3.forward * speed;
         motion.y = verticalVelocity;
@@ -105,6 +141,26 @@ public class RunnerController : MonoBehaviour
         CameraTransform.localPosition = pos;
     }
 
+    void StartDash()
+    {
+        isDashing = true;
+        dashTimer = DashDuration;
+        dashCooldownTimer = DashCooldown;
+    }
+
+    void TickDash()
+    {
+        if (dashCooldownTimer > 0f)
+            dashCooldownTimer -= Time.deltaTime;
+
+        if (!isDashing) return;
+
+        dashTimer -= Time.deltaTime;
+        if (dashTimer <= 0f)
+        {
+            isDashing = false;
+        }
+    }
 
     void TickSlide()
     {
