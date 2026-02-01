@@ -10,6 +10,7 @@ public class Shooter : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.IsPaused) return;
         if (GameManager.I != null && GameManager.I.IsGameOver) return;
 
         cd -= Time.deltaTime;

@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
+        if (PauseManager.IsPaused) return;
         if (Visual != null)
             Visual.localRotation = Quaternion.Euler(VisualEulerOffset);
 

@@ -19,6 +19,7 @@ public class FollowCamera : MonoBehaviour
 
     void LateUpdate()
     {
+        if (PauseManager.IsPaused) return;
         if (!Target) return;
 
         Vector3 desiredOffset = NormalOffset;
