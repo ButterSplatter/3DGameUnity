@@ -84,8 +84,16 @@ public class RunnerController : MonoBehaviour
         bool grounded = cc.isGrounded;
 
         if (grounded && verticalVelocity < 0f)
+        {
             verticalVelocity = -2f;
             jumpsLeft = MaxJumps;
+        }
+        else if (!grounded && jumpsLeft == 1)
+            jumpsLeft = 1;
+        else
+        {
+            jumpsLeft --;
+        }
 
 
 
